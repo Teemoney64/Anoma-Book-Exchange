@@ -106,11 +106,16 @@ Simply upload these files to any web server:
 
 ```
 anoma-book-exchange/
-├── anoma-book-exchange.html    # Main application file
+├── public/                    # Deployment-ready files
+│   ├── index.html             # Main application (copy of anoma-book-exchange.html)
+│   ├── anoma-logo.svg         # Anoma branding logo
+│   └── red-wave.svg           # Decorative wave graphic
+├── anoma-book-exchange.html    # Main application file (development)
 ├── index.html                  # Enhanced version with meta tags
 ├── app.js                      # React components (if separated)
 ├── anoma-logo.svg             # Anoma branding logo
 ├── red-wave.svg               # Decorative wave graphic
+├── vercel.json                 # Vercel deployment configuration
 ├── package.json               # Project metadata & scripts
 ├── .gitignore                 # Git ignore rules
 ├── README.md                  # This file

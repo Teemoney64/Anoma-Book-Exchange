@@ -91,11 +91,28 @@ jobs:
 
 1. **Create account** at [vercel.com](https://vercel.com)
 2. **Import your GitHub repository**
-3. **Deploy settings**:
-   - Framework Preset: Other
-   - Build command: (leave empty)
-   - Output directory: `./`
-4. **Deploy** - Live in seconds!
+3. **The project is pre-configured** with `vercel.json` for automatic deployment
+4. **Vercel will automatically**:
+   - Detect the `public` directory as output
+   - Use the included configuration
+   - Deploy your site instantly
+
+**Manual Configuration** (if needed):
+- Framework Preset: **Other**
+- Build command: (leave empty or use `npm run build:windows`)
+- Output directory: **public**
+- Install command: (leave empty)
+
+**Project Structure for Vercel**:
+```
+project-root/
+├── public/
+│   ├── index.html         # Main application
+│   ├── anoma-logo.svg     # Anoma logo
+│   └── red-wave.svg       # Decorative wave
+├── vercel.json            # Vercel configuration
+└── package.json           # Project metadata
+```
 
 ### 4. Self-Hosted / Custom Server
 
@@ -200,22 +217,28 @@ const config = CONFIG[ENV];
 
 ### Common Issues
 
-1. **Blank page after deployment**:
+1. **Vercel: "No Output Directory named 'public' found"**:
+   - **Solution 1**: Use the included `vercel.json` configuration file
+   - **Solution 2**: In Vercel dashboard, set Output Directory to `./` (root)
+   - **Solution 3**: Ensure Framework Preset is set to "Other"
+   - The project includes a `vercel.json` file that automatically configures this
+
+2. **Blank page after deployment**:
    - Check browser console for errors
    - Verify CDN resources are loading
    - Ensure HTTPS for external resources
 
-2. **Images not loading**:
+3. **Images not loading**:
    - Check file paths are relative
    - Verify SVG files are properly formatted
    - Ensure files are committed to repository
 
-3. **GitHub Pages not updating**:
+4. **GitHub Pages not updating**:
    - Check Actions tab for build status
    - Clear browser cache
    - Wait 5-10 minutes for propagation
 
-4. **CORS issues**:
+5. **CORS issues**:
    - Use relative paths for local resources
    - Ensure CDN resources support CORS
    - Consider self-hosting dependencies

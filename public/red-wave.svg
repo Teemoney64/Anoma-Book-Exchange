@@ -1,0 +1,14 @@
+<svg width="450" height="200" viewBox="0 0 450 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="redWave" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#ff4444;stop-opacity:1" />
+    <stop offset="50%" style="stop-color:#ff6666;stop-opacity:0.8" />
+    <stop offset="100%" style="stop-color:#ff8888;stop-opacity:0.6" />
+  </linearGradient>
+</defs>
+<rect width="450" height="200" fill="#ffffff"/>
+<!-- Red flowing wave -->
+<path d="M0 120 Q50 80 100 90 T200 85 Q250 75 300 85 T400 75 Q425 70 450 75 L450 200 L0 200 Z" fill="url(#redWave)"/>
+<!-- Upper flowing curve -->
+<path d="M0 100 Q75 60 150 70 T300 65 Q375 55 450 60 L450 0 Q400 10 350 15 T250 20 Q150 25 75 30 T0 35 Z" fill="url(#redWave)" opacity="0.7"/>
+</svg>

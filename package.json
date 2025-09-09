@@ -6,7 +6,8 @@
   "scripts": {
     "start": "python -m http.server 8000",
     "dev": "live-server --port=8000",
-    "build": "echo 'No build process needed - static HTML app'",
+    "build": "mkdir -p public && cp anoma-book-exchange.html public/index.html && cp *.svg public/",
+    "build:windows": "if not exist public mkdir public && copy anoma-book-exchange.html public\\index.html && copy *.svg public\\",
     "deploy": "gh-pages -d .",
     "test": "echo 'No tests specified yet'"
   },
