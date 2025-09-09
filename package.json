@@ -1,0 +1,40 @@
+{
+  "name": "anoma-book-exchange",
+  "version": "1.0.0",
+  "description": "A lightweight demo web app that demonstrates Anoma's intent-centric system through a book exchange platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "live-server --port=8000",
+    "build": "echo 'No build process needed - static HTML app'",
+    "deploy": "gh-pages -d .",
+    "test": "echo 'No tests specified yet'"
+  },
+  "keywords": [
+    "anoma",
+    "intent-centric",
+    "decentralized",
+    "book-exchange",
+    "demo",
+    "react",
+    "tailwindcss",
+    "blockchain"
+  ],
+  "author": "Jotos64",
+  "license": "MIT",
+  "homepage": "https://github.com/username/anoma-book-exchange#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/anoma-book-exchange.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/anoma-book-exchange/issues"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

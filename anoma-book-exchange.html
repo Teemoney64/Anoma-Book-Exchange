@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anoma Book Exchange - Intent-Centric Demo</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Anoma Brand Colors */
+        :root {
+            --anoma-navy: #1E3A8A;
+            --anoma-red: #DC2626;
+            --anoma-beige: #FDE68A;
+            --anoma-gold: #FBBF24;
+            --anoma-light-beige: #FCD34D;
+            --anoma-neutral: #F9FAFB;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .pulse-match {
+            animation: pulseMatch 1s ease-in-out;
+        }
+        @keyframes pulseMatch {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Fallback styling in case CDN fails */
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .text-white { color: #ffffff; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root">
+        <!-- Fallback content in case React doesn't load -->
+        <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+            <h1 style="color: #2563eb; font-size: 2.5rem; margin-bottom: 1rem;">Anoma Book Exchange</h1>
+            <p style="color: #666; font-size: 1.2rem;">Loading the intent-centric demo...</p>
+            <div style="margin-top: 2rem; padding: 20px; background: #f0f0f0; border-radius: 8px; max-width: 600px; margin: 2rem auto;">
+                <p><strong>If the app doesn't load:</strong></p>
+                <ol style="text-align: left; margin-top: 1rem;">
+                    <li>Make sure you have an internet connection (for CDN resources)</li>
+                    <li>Try opening the file in a different browser</li>
+                    <li>Check if JavaScript is enabled in your browser</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Mock data for preloaded intents
+        const initialIntents = [
+          {
+            id: 1,
+            username: "Alice",
+            bookWanted: "1984",
+            bookOffered: "The Great Gatsby",
+            timestamp: new Date().toISOString()
+          },
+          {
+            id: 2,
+            username: "Bob",
+            bookWanted: "The Great Gatsby",
+            bookOffered: "To Kill a Mockingbird",
+            timestamp: new Date().toISOString()
+          },
+          {
+            id: 3,
+            username: "Charlie",
+            bookWanted: "To Kill a Mockingbird",
+            bookOffered: "1984",
+            timestamp: new Date().toISOString()
+          }
+        ];
+
+        // Hero Section Component
+        const HeroSection = () => {
+          return (
+            <div className="relative text-white py-20 px-4 fade-in overflow-hidden" style={{backgroundColor: '#1E3A8A'}}>
+              {/* Red Wave Background */}
+              <div className="absolute inset-0 opacity-15">
+                <img 
+                  src="red-wave.svg" 
+                  alt="Decorative Wave" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              {/* Content */}
+              <div className="relative z-10 max-w-4xl mx-auto text-center">
+                <div className="mb-8">
+                  <h1 className="text-5xl md:text-7xl font-bold">
+                    Anoma Book Exchange
+                  </h1>
+                </div>
+                <h2 className="text-2xl md:text-3xl mb-6 font-medium" style={{color: '#FDE68A'}}>
+                  Powered By Anoma
+                </h2>
+                <p className="text-xl md:text-2xl mb-12 text-blue-100 max-w-3xl mx-auto">
+                  Declare what you want and what you offer - let the solver do the matching.
+                </p>
+                <button 
+                  className="px-8 py-4 text-lg font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
+                  style={{backgroundColor: '#FBBF24', color: '#1E3A8A'}}
+                  onClick={() => document.getElementById('intent-form').scrollIntoView({behavior: 'smooth'})}
+                >
+
+
+                  Shrimpers Are Ready To Hear Your Intent Below
+                </button>
+              </div>
+            </div>
+          );
+        };
+
+        // Intent Form Component
+        const IntentForm = ({ onAddIntent }) => {
+          const [formData, setFormData] = useState({
+            username: '',
+            bookWanted: '',
+            bookOffered: ''
+          });
+
+          const handleSubmit = (e) => {
+            e.preventDefault();
+            if (formData.username && formData.bookWanted && formData.bookOffered) {
+              onAddIntent({
+                ...formData,
+                id: Date.now(),
+                timestamp: new Date().toISOString()
+              });
+              setFormData({ username: '', bookWanted: '', bookOffered: '' });
+            }
+          };
+
+          return (
+            <div id="intent-form" className="rounded-lg shadow-xl p-8 mb-12 fade-in" style={{backgroundColor: '#FDE68A'}}>
+              <h2 className="text-3xl font-bold mb-6" style={{color: '#1E3A8A'}}>Post New Intent</h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div>
+                    <label className="block text-sm font-bold mb-3" style={{color: '#1E3A8A'}}>
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.username}
+                      onChange={(e) => setFormData({...formData, username: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                      style={{backgroundColor: '#F9FAFB', color: '#1E3A8A'}}
+                      placeholder="Your username"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold mb-3" style={{color: '#1E3A8A'}}>
+                      Book Wanted
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.bookWanted}
+                      onChange={(e) => setFormData({...formData, bookWanted: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                      style={{backgroundColor: '#F9FAFB', color: '#1E3A8A'}}
+                      placeholder="Book you want"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold mb-3" style={{color: '#1E3A8A'}}>
+                      Book Offered
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.bookOffered}
+                      onChange={(e) => setFormData({...formData, bookOffered: e.target.value})}
+                      className="w-full px-4 py-3 border-2 border-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                      style={{backgroundColor: '#F9FAFB', color: '#1E3A8A'}}
+                      placeholder="Book you offer"
+                      required
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-4 px-6 rounded-lg font-bold text-lg transition-all duration-300 hover:scale-105 shadow-lg"
+                  style={{backgroundColor: '#FBBF24', color: '#1E3A8A'}}
+                >
+                  Post Intent
+                </button>
+              </form>
+            </div>
+          );
+        };
+
+        // Intent Card Component
+        const IntentCard = ({ intent, isMatched = false }) => {
+          return (
+            <div className={`rounded-lg shadow-lg p-6 border-l-4 slide-in transition-all duration-300 ${isMatched ? 'border-yellow-500 pulse-match' : 'border-red-500'}`} style={{backgroundColor: '#F9FAFB'}}>
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="font-bold text-lg" style={{color: '#1E3A8A'}}>{intent.username}</h3>
+                {isMatched && (
+                  <span className="text-xs px-3 py-1 rounded-full font-bold" style={{backgroundColor: '#FBBF24', color: '#1E3A8A'}}>
+                    Matched
+                  </span>
+                )}
+              </div>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center">
+                  <span className="font-bold" style={{color: '#DC2626'}}>Wants:</span>
+                  <span className="ml-3" style={{color: '#1E3A8A'}}>{intent.bookWanted}</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="font-bold" style={{color: '#059669'}}>Offers:</span>
+                  <span className="ml-3" style={{color: '#1E3A8A'}}>{intent.bookOffered}</span>
+                </div>
+              </div>
+              <div className="mt-4 text-xs" style={{color: '#6B7280'}}>
+                {new Date(intent.timestamp).toLocaleString()}
+              </div>
+            </div>
+          );
+        };
+
+        // Intent Pool Component
+        const IntentPool = ({ intents }) => {
+          return (
+            <div className="rounded-lg shadow-xl p-8 mb-12" style={{backgroundColor: '#F9FAFB'}}>
+              <h2 className="text-3xl font-bold mb-8" style={{color: '#1E3A8A'}}>
+                Active Intent Pool ({intents.length})
+              </h2>
+              {intents.length === 0 ? (
+                <p className="text-center py-12 text-lg" style={{color: '#6B7280'}}>No active intents</p>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {intents.map(intent => (
+                    <IntentCard key={intent.id} intent={intent} />
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Matched Trades Component
+        const MatchedTrades = ({ matches }) => {
+          return (
+            <div className="rounded-lg shadow-xl p-8 mb-12" style={{backgroundColor: '#F9FAFB'}}>
+              <h2 className="text-3xl font-bold mb-8" style={{color: '#1E3A8A'}}>
+                Matched Trades ({matches.length})
+              </h2>
+              {matches.length === 0 ? (
+                <p className="text-center py-12 text-lg" style={{color: '#6B7280'}}>No matches found yet</p>
+              ) : (
+                <div className="space-y-8">
+                  {matches.map((match, index) => (
+                    <div key={index} className="rounded-xl p-6 border-4 fade-in" style={{backgroundColor: '#FDE68A', borderColor: '#FBBF24'}}>
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="font-bold text-xl" style={{color: '#1E3A8A'}}>Match #{index + 1}</h3>
+                        <span className="text-sm px-4 py-2 rounded-full font-bold" style={{backgroundColor: '#FBBF24', color: '#1E3A8A'}}>
+                          Solved via Intent Matching (Anoma Demo)
+                        </span>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {match.participants.map((intent, i) => (
+                          <IntentCard key={intent.id} intent={intent} isMatched={true} />
+                        ))}
+                      </div>
+                      <div className="mt-6 text-sm p-4 rounded-lg" style={{color: '#1E3A8A', backgroundColor: '#FCD34D'}}>
+                        <strong>Trade Summary:</strong> {match.summary}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Solver Component
+        const Solver = ({ intents, onMatches, isRunning, setIsRunning }) => {
+          const runSolver = () => {
+            setIsRunning(true);
+            
+            // Simulate solver processing time
+            setTimeout(() => {
+              const matches = findMatches(intents);
+              onMatches(matches);
+              setIsRunning(false);
+            }, 2000);
+          };
+
+          const findMatches = (intents) => {
+            const matches = [];
+            const used = new Set();
+
+            // Find direct matches (2-way swaps)
+            for (let i = 0; i < intents.length; i++) {
+              if (used.has(i)) continue;
+              
+              for (let j = i + 1; j < intents.length; j++) {
+                if (used.has(j)) continue;
+                
+                const intentA = intents[i];
+                const intentB = intents[j];
+                
+                // Direct match: A wants what B offers, B wants what A offers
+                if (intentA.bookWanted === intentB.bookOffered && 
+                    intentB.bookWanted === intentA.bookOffered) {
+                  matches.push({
+                    participants: [intentA, intentB],
+                    summary: `${intentA.username} gets "${intentA.bookWanted}" from ${intentB.username}, ${intentB.username} gets "${intentB.bookWanted}" from ${intentA.username}`
+                  });
+                  used.add(i);
+                  used.add(j);
+                  break;
+                }
+              }
+            }
+
+            // Find 3-way cycles (A→B→C→A)
+            for (let i = 0; i < intents.length; i++) {
+              if (used.has(i)) continue;
+              
+              for (let j = 0; j < intents.length; j++) {
+                if (used.has(j) || i === j) continue;
+                
+                for (let k = 0; k < intents.length; k++) {
+                  if (used.has(k) || i === k || j === k) continue;
+                  
+                  const intentA = intents[i];
+                  const intentB = intents[j];
+                  const intentC = intents[k];
+                  
+                  // 3-way cycle: A wants B's offer, B wants C's offer, C wants A's offer
+                  if (intentA.bookWanted === intentB.bookOffered &&
+                      intentB.bookWanted === intentC.bookOffered &&
+                      intentC.bookWanted === intentA.bookOffered) {
+                    matches.push({
+                      participants: [intentA, intentB, intentC],
+                      summary: `3-way cycle: ${intentA.username} → ${intentB.username} → ${intentC.username} → ${intentA.username}`
+                    });
+                    used.add(i);
+                    used.add(j);
+                    used.add(k);
+                    break;
+                  }
+                }
+                if (used.has(i)) break;
+              }
+            }
+
+            return matches;
+          };
+
+          return (
+            <div className="text-center mb-12">
+              <button
+                onClick={runSolver}
+                disabled={isRunning || intents.length === 0}
+                className={`px-12 py-4 rounded-xl font-bold text-xl transition-all duration-300 shadow-xl ${
+                  isRunning || intents.length === 0
+                    ? 'opacity-50 cursor-not-allowed'
+                    : 'hover:scale-105 hover:shadow-2xl'
+                }`}
+                style={{
+                  backgroundColor: isRunning || intents.length === 0 ? '#9CA3AF' : '#FBBF24',
+                  color: '#1E3A8A'
+                }}
+              >
+                {isRunning ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-6 w-6" style={{color: '#1E3A8A'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Running Solver...
+                  </span>
+                ) : (
+                  'Run Solver'
+                )}
+              </button>
+              <p className="mt-4 text-lg" style={{color: '#6B7280'}}>
+                Click to find matching intents and coordinate swaps
+              </p>
+            </div>
+          );
+        };
+
+        // Footer Component
+        const Footer = () => {
+          return (
+            <footer className="relative py-12 mt-20 overflow-hidden" style={{backgroundColor: '#1E3A8A'}}>
+              {/* Red Wave Background */}
+              <div className="absolute inset-0 opacity-20">
+                <img 
+                  src="red-wave.svg" 
+                  alt="Decorative Wave" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              {/* Content */}
+              <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
+                <p className="text-lg" style={{color: '#FDE68A'}}>
+                  Demo inspired by Anoma's intent-centric architecture.
+                </p>
+
+                <p className="text-lg" style={{color: '#FDE68A'}}>
+                    Built by Jotos64.
+                    
+                </p>
+
+                <p className="text-sm mt-3" style={{color: '#93C5FD'}}>
+                  Built with React, TailwindCSS, and intent-matching algorithms
+                </p>
+              </div>
+            </footer>
+          );
+        };
+
+        // Main App Component
+        const App = () => {
+          const [activeIntents, setActiveIntents] = useState(initialIntents);
+          const [matches, setMatches] = useState([]);
+          const [isRunning, setIsRunning] = useState(false);
+
+          const addIntent = (newIntent) => {
+            setActiveIntents(prev => [newIntent, ...prev]);
+          };
+
+          const handleMatches = (foundMatches) => {
+            if (foundMatches.length > 0) {
+              // Remove matched intents from active pool
+              const matchedIds = new Set();
+              foundMatches.forEach(match => {
+                match.participants.forEach(participant => {
+                  matchedIds.add(participant.id);
+                });
+              });
+              
+              setActiveIntents(prev => prev.filter(intent => !matchedIds.has(intent.id)));
+              setMatches(prev => [...foundMatches, ...prev]);
+            }
+          };
+
+          return (
+            <div className="min-h-screen" style={{backgroundColor: '#F9FAFB'}}>
+              <HeroSection />
+              
+              <div className="max-w-6xl mx-auto px-4 py-8">
+                <IntentForm onAddIntent={addIntent} />
+                
+                <IntentPool intents={activeIntents} />
+                
+                <Solver 
+                  intents={activeIntents}
+                  onMatches={handleMatches}
+                  isRunning={isRunning}
+                  setIsRunning={setIsRunning}
+                />
+                
+                <MatchedTrades matches={matches} />
+              </div>
+              
+              <Footer />
+            </div>
+          );
+        };
+
+        // Render the app
+        try {
+          ReactDOM.render(<App />, document.getElementById('root'));
+        } catch (error) {
+          console.error('Error rendering React app:', error);
+          document.getElementById('root').innerHTML = `
+            <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+              <h1 style="color: #dc2626;">Error Loading Application</h1>
+              <p>There was an error loading the React application. Please check:</p>
+              <ul style="text-align: left; max-width: 500px; margin: 20px auto;">
+                <li>Internet connection for CDN resources</li>
+                <li>Browser JavaScript support</li>
+                <li>Browser console for error details</li>
+              </ul>
+            </div>
+          `;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anoma Book Exchange - Intent-Centric Demo</title>
+    <meta name="description" content="A lightweight demo showcasing Anoma's intent-centric system through a book exchange platform">
+    <meta name="keywords" content="Anoma, intent-centric, decentralized, book exchange, demo, blockchain">
+    <meta name="author" content="Jotos64">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://username.github.io/anoma-book-exchange/">
+    <meta property="og:title" content="Anoma Book Exchange - Intent-Centric Demo">
+    <meta property="og:description" content="Experience the future of decentralized exchange with Anoma's intent-matching system">
+    <meta property="og:image" content="./anoma-logo.svg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://username.github.io/anoma-book-exchange/">
+    <meta property="twitter:title" content="Anoma Book Exchange - Intent-Centric Demo">
+    <meta property="twitter:description" content="Experience the future of decentralized exchange with Anoma's intent-matching system">
+    <meta property="twitter:image" content="./anoma-logo.svg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./anoma-logo.svg">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Anoma Brand Colors */
+        :root {
+            --anoma-navy: #1E3A8A;
+            --anoma-red: #DC2626;
+            --anoma-beige: #FDE68A;
+            --anoma-gold: #FBBF24;
+            --anoma-light-beige: #FCD34D;
+            --anoma-neutral: #F9FAFB;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .pulse-match {
+            animation: pulseMatch 1s ease-in-out;
+        }
+        @keyframes pulseMatch {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Fallback styling in case CDN fails */
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .text-white { color: #ffffff; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root">
+        <!-- Fallback content in case React doesn't load -->
+        <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+            <h1 style="color: #2563eb; font-size: 2.5rem; margin-bottom: 1rem;">Anoma Book Exchange</h1>
+            <p style="color: #666; font-size: 1.2rem;">Loading the intent-centric demo...</p>
+            <div style="margin-top: 2rem; padding: 20px; background: #f0f0f0; border-radius: 8px; max-width: 600px; margin: 2rem auto;">
+                <p><strong>If the app doesn't load:</strong></p>
+                <ol style="text-align: left; margin-top: 1rem;">
+                    <li>Make sure you have an internet connection (for CDN resources)</li>
+                    <li>Try opening the file in a different browser</li>
+                    <li>Check if JavaScript is enabled in your browser</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/babel" src="app.js"></script>
+</body>
+</html>
